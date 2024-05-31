@@ -1,35 +1,52 @@
-import React, { useEffect, useState } from 'react'
-import '../style/index.css'
+import React, { useEffect, useState } from 'react';
 
 const App = () => {
-  const [pokemon, setPokemon] = useState([])
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const getAllData = async () => {
+    const fetchProducts = async () => {
       try {
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20')
-        const { results } = await response.json()
-        setPokemon(results)
-      } catch (err) {
-        console.error(err)
+        const response = await fetch('https://fakestoreapi.com/products');
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setError(error);
+      } finally {
+        setIsLoading(false);
       }
-    }
-    getAllData()
-  }, [])
+    };
+
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('https://fakestoreapi.com/products/categories');
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        setError(error);
+      }
+    };
+
+    fetchProducts();
+    fetchCategories();
+  }, []);
+
+  // (For now, we're just logging the data to the console)
+  console.log('Products:', products);
+  console.log('Categories:', categories);
+  console.log('isLoading:', isLoading);
+  console.log('Error:', error);
 
   return (
     <div>
-      <p>Hello World</p>
-      {!!pokemon.length &&
-        pokemon.map((el, i) => {
-          return (
-            <div key={i}>
-              <h1>{el.name}</h1>
-            </div>
-          )
-        })}
+      {isLoading ? <p>Loading products...</p> : <p>Products loaded!</p>}
+      {error && <p>Error: {error.message}</p>}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
