@@ -23,7 +23,7 @@ function ProductDetail() {
       />
     </div>
 
-    {/* Product Details and Actions */}
+
     <div className="md:w-1/2 flex flex-col justify-between"> {/* Details/actions container */}
       {/* Product Details */}
       <div>
