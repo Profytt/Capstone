@@ -1,5 +1,6 @@
 import { useEffect, useState, createContext } from "react";
 
+
 const ApiContext = createContext();
 
 function ApiProvider({ children }) {
@@ -7,6 +8,7 @@ function ApiProvider({ children }) {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,7 +42,7 @@ function ApiProvider({ children }) {
   }, []);
 
   return (
-    <ApiContext.Provider value={{ products, categories, isLoading, error }}>
+    <ApiContext.Provider value={{ products, categories, isLoading, error, }}>
       {children}
     </ApiContext.Provider>
   );

@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./style/index.css"; 
-import { ApiProvider } from './components/Api.jsx'; 
+import App from "./App.jsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <ApiProvider /> 
+    <App /> 
   </React.StrictMode>
 );
