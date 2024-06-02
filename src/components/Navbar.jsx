@@ -1,13 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import NavigationLinks from "./NavigationLinks";
 
 function Navbar() {
   return (
     <div class="navbar bg-blue-700">
       <div class="flex-1">
-        <a class="btn btn-ghost text-xl text-white">daisyUI</a>
+        <a class="btn btn-ghost text-xl text-white">QwikBuy</a>
       </div>
       <div class="flex-none">
+        <NavigationLinks />
         <div class="dropdown dropdown-end">
           <div tabindex="0" role="button" class="btn btn-ghost btn-circle text-white">
             <div class="indicator">
