@@ -1,20 +1,24 @@
 import { useEffect, useState, createContext, useContext } from "react";
 import { AuthContext } from "./Auth";
-import { ApiContext } from "./Api";
+import { ApiContext } from "./Api"; // Import ApiContext to access products
 
 const CartContext = createContext();
 
 function CartProvider({ children }) {
   const { user } = useContext(AuthContext);
-  const { products, isLoading } = useContext(ApiContext);
+  const { products, isLoading: productsLoading } = useContext(ApiContext); // Use ApiContext
   const [cartItems, setCartItems] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Fetch initial cart data for the user
   useEffect(() => {
     const fetchUserCart = async () => {
-        if (user) {
+      if (!user) {
+        setIsLoading(false); // If not logged in, no cart to load
+        return;
+      }
       try {
         const response = await fetch(
           `https://fakestoreapi.com/carts/user/${user.id}`
@@ -23,10 +27,15 @@ function CartProvider({ children }) {
         if (!response.ok) {
           throw new Error("Network response was not ok.");
         }
-        
+
         const data = await response.json();
-        setCartItems(data);
-        calculateCartTotal(data); // Calculate total when cart data is updated
+        // Find the most recent cart
+        const mostRecentCart = data.reduce((prev, current) => {
+          return new Date(prev.date) > new Date(current.date) ? prev : current;
+        }, {});
+
+        setCartItems(mostRecentCart.products || []); // Initialize to empty if no products
+        calculateCartTotal(mostRecentCart.products || []);
       } catch (error) {
         console.error("Error fetching user's cart:", error);
         setError(error);
@@ -34,18 +43,16 @@ function CartProvider({ children }) {
         setIsLoading(false);
       }
     };
-     //Only fetch cart if user is logged in
-      fetchUserCart();
-    }
-  }, [user]);
+
+    fetchUserCart();
+  }, [user, products]); 
 
   // Calculate cart total
   const calculateCartTotal = (items) => {
     const total = items.reduce(
-      (acc, cart) => {
-        return acc + cart.products.reduce((total, product) => {
-          return total + product.quantity * products.find(p => p.id === product.productId).price;
-        }, 0);
+      (acc, product) => { // Iterate directly over product objects in the cart
+        const productDetails = products.find(p => p.id === product.productId);
+        return acc + (productDetails?.price || 0) * product.quantity; // Default to 0 if product not found
       },
       0
     );
@@ -54,6 +61,11 @@ function CartProvider({ children }) {
 
   // Add to cart
   const addToCart = async (product, quantity) => {
+    if (!user) {
+      alert("Please log in to add items to your cart.");
+      return;
+    }
+
     try {
       const response = await fetch("https://fakestoreapi.com/carts", {
         method: "POST",
@@ -65,19 +77,8 @@ function CartProvider({ children }) {
       });
       const data = await response.json();
 
-      // Update local cart data 
-      setCartItems(prevCartItems => {
-        const existingIndex = prevCartItems.findIndex(item => item.id === data.id);
-        if (existingIndex !== -1) {
-          // Update the quantity if the item is already in the cart
-          const updatedItems = [...prevCartItems];
-          updatedItems[existingIndex] = data;
-          return updatedItems;
-        } else {
-          // Add the new item to the cart
-          return [...prevCartItems, data];
-        }
-      });
+      // Update local cart data (assuming data has the same structure as existing cartItems)
+      setCartItems(prevCartItems => [...prevCartItems, data]);
       calculateCartTotal(cartItems); // Update the cart total
     } catch (error) {
       console.error("Error adding to cart:", error);
@@ -87,16 +88,19 @@ function CartProvider({ children }) {
   // Remove from cart
   const removeFromCart = async (cartId) => {
     try {
-      await fetch(`https://fakestoreapi.com/carts/${cartId}`, {
+      const response = await fetch(`https://fakestoreapi.com/carts/${cartId}`, {
         method: "DELETE",
       });
-      setCartItems(cartItems.filter(item => item.id !== cartId));
-      calculateCartTotal(cartItems); // Update the cart total
+      if (response.ok) {
+        setCartItems(cartItems.filter((item) => item.id !== cartId));
+        calculateCartTotal(cartItems); // Update the cart total
+      } else {
+        console.error("Error removing from cart:", response.statusText);
+      }
     } catch (error) {
       console.error("Error removing from cart:", error);
     }
   };
-
   // Update cart item quantity
   const updateCartItemQuantity = async (cartId, productId, newQuantity) => {
     try {
@@ -138,4 +142,4 @@ function CartProvider({ children }) {
   );
 }
 
-export { CartContext, CartProvider };
+export { CartContext, CartProvider }
