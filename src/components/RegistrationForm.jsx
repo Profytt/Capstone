@@ -7,7 +7,7 @@ function RegistrationForm() {
     username: "",
     password: "",
   });
-  const { login } = useContext(AuthContext); // Assuming login is also used for registration
+  const { login } = useContext(AuthContext); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,9 +16,7 @@ function RegistrationForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    //In a real app you would check to see if the user is already registered, 
-    //if they are display an error message, if not then you would add the user
-    //to the database
+    
     
     try {
       const response = await fetch("https://fakestoreapi.com/users", {
@@ -28,13 +26,13 @@ function RegistrationForm() {
 
       if (response.ok) {
         const data = await response.json();
-        login(data); // Log the user in immediately after registration
+        login(data); 
       } else {
-        // Handle registration error (e.g., display error message)
+        
       }
     } catch (error) {
       console.error("Registration failed:", error);
-      // Handle registration error
+      
     }
   };
 

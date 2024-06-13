@@ -13,7 +13,7 @@ function Products() {
   if (error) return <div>Error: {error.message}</div>;
   if (isLoading) return <div>Loading products...</div>;
 
-  // Filtering Logic
+  
   const filteredProducts = products.filter((product) => {
     const matchesCategory = !filterCategory || product.category === filterCategory;
     const matchesSearch =
@@ -24,7 +24,7 @@ function Products() {
     return matchesCategory && matchesSearch && isWithinPriceRange;
   });
 
-  // Sorting Logic
+  
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortBy === "price") {
       return a.price - b.price;
@@ -33,7 +33,7 @@ function Products() {
     }
   });
 
-  // Categorization
+  
   const productsByCategory = {};
   sortedProducts.forEach((product) => {
     const category = product.category;
@@ -49,7 +49,7 @@ function Products() {
     <div>
       <h1>Product Catalog</h1>
 
-      {/* Filtering Options */}
+      
       <button
         className="btn btn-secondary"
         onClick={() => setShowFilterOptions(!showFilterOptions)}
@@ -57,7 +57,7 @@ function Products() {
         Sort & Filter
       </button>
 
-      {/* Conditionally Render Filter Options */}
+      
       {showFilterOptions && ( 
         <div className="filters mb-4 flex flex-wrap gap-4">
           <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
@@ -146,7 +146,7 @@ function Products() {
 
 
       {/* Product Display */}
-      <div className="container mx-auto">
+      <div className="container mx-auto23">
         {uniqueCategories.map((category) => (
           <div key={category} className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">{category}</h2>
@@ -154,7 +154,7 @@ function Products() {
               {productsByCategory[category].map((product) => (
                 <div
                   key={product.id}
-                  className="card card-compact bg-base-100 shadow-xl cursor-pointer"
+                  className="card card-compact bg-yellow-100 shadow-xl cursor-pointer"
                 >
                   <figure className="relative h-48">
                     <img

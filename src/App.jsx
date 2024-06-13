@@ -1,29 +1,44 @@
-import React, { useContext } from 'react';
-import { Routes, Route, BrowserRouter, Link } from 'react-router-dom';
-import Navbar from './components/Navbar.jsx';
-import Products from './components/Products.jsx';
-import ProductDetail from './components/ProductDetails.jsx';
-import { ApiProvider } from './components/Api.jsx';
-import { AuthProvider } from "./components/Auth.jsx";
-import LoginForm from './components/LoginForm.jsx';
-import RegistrationForm from './components/RegistrationForm.jsx';
+import React from "react";
+import { Routes, Route, BrowserRouter, Outlet } from "react-router-dom";
+import Products from "./components/Products";
+import ProductDetail from "./components/ProductDetails";
+import { ApiProvider } from "./components/Api";
+import { AuthProvider } from "./components/Auth";
+import LoginForm from "./components/LoginForm";
+import RegistrationForm from "./components/RegistrationForm";
+import Navbar from "./components/Navbar";
+import Cart from "./components/Cart";
+import { CartProvider } from './components/CartApi';
+
 
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider> 
+      <AuthProvider>
         <ApiProvider>
-          <Navbar />
+          <CartProvider> {/* Move CartProvider outside of Layout */}
+            <Navbar /> {/* Navbar can now access both contexts */}
             <Routes>
-              <Route path="/" element={<Products />} />
-              <Route path="/product/:productId" element={<ProductDetail />} /> 
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Products />} />
+                <Route path="/product/:productId" element={<ProductDetail />} />
+                <Route path="/cart" element={<Cart />} />
+              </Route>
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegistrationForm />} />
             </Routes>
+          </CartProvider>
         </ApiProvider>
       </AuthProvider>
     </BrowserRouter>
   );
 }
-export default App;
 
+function Layout() {
+  return (
+    <div>
+      <Outlet />  {/* This renders the child route's content */}
+    </div>
+  );
+}
+export default App;
