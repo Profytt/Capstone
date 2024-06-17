@@ -13,7 +13,7 @@ import { CartProvider } from './components/CartApi';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter key={Math.random()}>
       <AuthProvider>
         <ApiProvider>
           <CartProvider> {/* Move CartProvider outside of Layout */}
@@ -22,10 +22,10 @@ function App() {
               <Route path="/" element={<Layout />}>
                 <Route index element={<Products />} />
                 <Route path="/product/:productId" element={<ProductDetail />} />
-                <Route path="/cart" element={<Cart />} />
               </Route>
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegistrationForm />} />
+              <Route path="/cart" element={<Cart />} />
             </Routes>
           </CartProvider>
         </ApiProvider>

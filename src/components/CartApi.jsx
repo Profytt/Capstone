@@ -1,4 +1,5 @@
 import { useEffect, useState, createContext, useContext } from "react";
+import useLocalStorage from "./useLocalStorage";
 import { AuthContext } from "./Auth";
 import { ApiContext } from "./Api"; // Import ApiContext to access products
 
@@ -11,6 +12,9 @@ function CartProvider({ children }) {
   const [cartTotal, setCartTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [storedUser, setStoredUser] = useLocalStorage('user', null);
+
 
   // Fetch initial cart data for the user
   useEffect(() => {
