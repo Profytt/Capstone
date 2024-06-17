@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Routes, Route, BrowserRouter, Outlet } from "react-router-dom";
 import Products from "./components/Products";
 import ProductDetail from "./components/ProductDetails";
@@ -13,19 +13,21 @@ import { CartProvider } from './components/CartApi';
 
 function App() {
   return (
-    <BrowserRouter key={Math.random()}>
-      <AuthProvider>
+    <BrowserRouter>
+      <AuthProvider> 
         <ApiProvider>
-          <CartProvider> {/* Move CartProvider outside of Layout */}
-            <Navbar /> {/* Navbar can now access both contexts */}
+          <CartProvider>
+            <Navbar /> 
             <Routes>
+              {/* Layout Route - Renders Navbar on all child routes */}
               <Route path="/" element={<Layout />}>
                 <Route index element={<Products />} />
                 <Route path="/product/:productId" element={<ProductDetail />} />
+                <Route path="/cart" element={<Cart />} /> {/* Move Cart route inside Layout */}
               </Route>
+              {/* Auth Routes - No Navbar */}
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegistrationForm />} />
-              <Route path="/cart" element={<Cart />} />
             </Routes>
           </CartProvider>
         </ApiProvider>
