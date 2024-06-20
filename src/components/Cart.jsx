@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "./CartApi";
 import { ApiContext } from "./Api";
@@ -6,30 +6,29 @@ import { AuthContext } from "./Auth";
 
 function Cart() {
   const { user } = useContext(AuthContext);
-  const { products, isLoading } = useContext(ApiContext); // Access products
+  const { products, isLoading } = useContext(ApiContext);
   const {
     cartItems,
     removeFromCart,
     updateCartItemQuantity,
     cartTotal,
-    checkout, // Access checkout from context
+    clearCart,
   } = useContext(CartContext);
 
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
-
-  // Define handleCheckout within Cart.jsx
-  const handleCheckout = async () => {
-    setIsCheckingOut(true);
-    await checkout(); // Call the checkout function from the context
-    setIsCheckingOut(false);
-  };
-
   if (!user) {
-    return <p className="text-center text-gray-500 mt-10">Please log in to view your cart</p>; // Centered message
+    return (
+      <p className="text-center text-gray-500 mt-10">
+        Please log in to view your cart
+      </p>
+    );
   } else if (isLoading) {
-    return <p className="text-center text-gray-500 mt-10">Loading cart items...</p>;
+    return (
+      <p className="text-center text-gray-500 mt-10">Loading cart items...</p>
+    );
   } else if (cartItems.length === 0) {
-    return <p className="text-center text-gray-500 mt-10">Your cart is empty.</p>;
+    return (
+      <p className="text-center text-gray-500 mt-10">Your cart is empty.</p>
+    );
   }
 
   return (
@@ -69,12 +68,17 @@ function Cart() {
                   </td>
                   <td>${product.price.toFixed(2)}</td>
                   <td>
+                    {/* Add quantity update logic here */}
                     <input
                       type="number"
                       value={item.quantity}
                       min="1"
                       onChange={(e) =>
-                        updateCartItemQuantity(item.id, product.id, parseInt(e.target.value, 10))
+                        updateCartItemQuantity(
+                          item.id,
+                          product.id,
+                          parseInt(e.target.value, 10)
+                        )
                       }
                       className="w-16 border rounded"
                     />
@@ -97,22 +101,17 @@ function Cart() {
 
       {/* Order Summary */}
       <div className="mt-8 text-right">
-        <p className="text-lg font-semibold">
-          Total: ${cartTotal.toFixed(2)}
-        </p>
-        <button
-          className={`btn btn-primary mt-4`}
-          onClick={handleCheckout}
-        >
-          Proceed to Checkout
-        </button>
+        <p className="text-lg font-semibold">Total: ${cartTotal.toFixed(2)}</p>
+        {/* Add a checkout button or form here */}
+        <button onClick={clearCart} className="btn btn-primary mt-4">
+          Clear Cart
+        </button> {/* Add clear cart button */}
       </div>
-
       <Link to="/">
         <button className="btn btn-secondary">Back to Home</button>
       </Link>
     </div>
   );
-};
+}
 
 export default Cart;

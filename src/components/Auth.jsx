@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import useLocalStorage from "./useLocalStorage";
+import useLocalStorage from "../useLocalStorage";
 
 const AuthContext = createContext({
     user: null, 
