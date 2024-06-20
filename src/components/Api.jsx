@@ -1,5 +1,4 @@
-import { useEffect, useState, createContext } from "react";
-
+import { useEffect, useState, createContext } from 'react';
 
 const ApiContext = createContext();
 
@@ -8,22 +7,16 @@ function ApiProvider({ children }) {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
-  const [cartTotal, setCartTotal] = useState(0);
-
-
-  
-
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://fakestoreapi.com/products");
+        const response = await fetch('https://fakestoreapi.com/products');
         const data = await response.json();
         setProducts(data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setError(error);
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        setError(err); 
       } finally {
         setIsLoading(false);
       }
@@ -31,14 +24,12 @@ function ApiProvider({ children }) {
 
     const fetchCategories = async () => {
       try {
-        const response = await fetch(
-          "https://fakestoreapi.com/products/categories"
-        );
+        const response = await fetch('https://fakestoreapi.com/products/categories');
         const data = await response.json();
         setCategories(data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-        setError(error);
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+        setError(err);
       }
     };
 
@@ -47,10 +38,10 @@ function ApiProvider({ children }) {
   }, []);
 
   return (
-    <ApiContext.Provider value={{ products, categories, isLoading, error, }}>
+    <ApiContext.Provider value={{ products, categories, isLoading, error }}>
       {children}
     </ApiContext.Provider>
   );
 }
 
-export { ApiContext, ApiProvider }; 
+export { ApiContext, ApiProvider };

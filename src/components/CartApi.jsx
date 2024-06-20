@@ -1,10 +1,12 @@
-import React, { useEffect, useState, createContext } from 'react';
-import useLocalStorage from '../useLocalStorage';
+import { useEffect, useState, createContext, useContext } from "react";
+import { AuthContext } from "./Auth";
+import useLocalStorage from "../useLocalStorage"; 
 
 const CartContext = createContext();
 
 function CartProvider({ children }) {
-  const [cartItems, setCartItems] = useLocalStorage('cartItems', []);
+  const { user } = useContext(AuthContext);
+  const [cartItems, setCartItems] = useLocalStorage('cartItems', []); // Use custom hook for cartItems
   const [cartTotal, setCartTotal] = useState(0);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ function CartProvider({ children }) {
           item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
         );
       } else {
-        return [...prevItems, { ...product, quantity }];
+        return [...prevItems, { ...product, quantity }]; // Create new item and add it to the cart
       }
     });
   };
