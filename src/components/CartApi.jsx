@@ -1,11 +1,9 @@
-import { useEffect, useState, createContext, useContext } from "react";
-import { AuthContext } from "./Auth";
+import React, { useEffect, useState, createContext } from "react";
 import useLocalStorage from "../useLocalStorage"; 
 
 const CartContext = createContext();
 
 function CartProvider({ children }) {
-  const { user } = useContext(AuthContext);
   const [cartItems, setCartItems] = useLocalStorage('cartItems', []); // Use custom hook for cartItems
   const [cartTotal, setCartTotal] = useState(0);
 
@@ -13,7 +11,7 @@ function CartProvider({ children }) {
     // Calculate the total price whenever the cart items change
     const calculateTotal = () => {
       const total = cartItems.reduce((acc, item) => {
-        return acc + item.price * item.quantity; // Assuming your cart item structure
+        return acc + item.price * item.quantity;
       }, 0);
       setCartTotal(total);
     };

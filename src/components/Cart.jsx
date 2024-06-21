@@ -34,8 +34,11 @@ function Cart() {
 
   return (
     <div className="container mx-auto mt-10 bg-white p-8 rounded-lg shadow-md">
-      <h1 className="text-2xl font-semibold mb-4">Your Shopping Cart</h1>
+      <h1 className="text-2xl font-semibold mb-4 text-gray-800">
+        Your Shopping Cart
+      </h1>
 
+      {/* Cart Items Table */}
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full">
           <thead>
@@ -49,22 +52,27 @@ function Cart() {
           </thead>
           <tbody>
             {/* Loop through cartItems and find the corresponding product */}
-            {cartItems.map((item, index) => (
+            {cartItems.map((item, index) => {
+              // Check if the product exists in the loaded products array
+              const product = products.find((p) => p.id === item.id);
+
+              return product ? (
                 <tr key={index}>
                   <td>
                     <div className="flex items-center space-x-3">
                       <div className="avatar">
                         <div className="mask mask-squircle w-12 h-12">
-                          <img src={item.image} alt={item.title} />
+                          <img src={product?.image} alt={product?.title} />
                         </div>
                       </div>
                       <div>
-                        <div className="font-bold">{item.title}</div>
+                        <div className="font-bold">{product?.title}</div>
                       </div>
                     </div>
                   </td>
-                  <td>${item.price.toFixed(2)}</td>
+                  <td>${product?.price.toFixed(2) || "Loading..."}</td>
                   <td>
+                    {/* Add quantity update logic here */}
                     <input
                       type="number"
                       min={1} 
@@ -82,24 +90,27 @@ function Cart() {
                       className="w-16 input input-bordered"
                     />
                   </td>
-                  <td>${(item.quantity * item.price).toFixed(2)}</td>
+                  <td>${(item.quantity * (product?.price || 0)).toFixed(2)}</td>
                   <th>
                     <button
                       className="btn btn-error btn-sm"
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => removeFromCart(item.id)} // Use productId to remove
                     >
                       Remove
                     </button>
                   </th>
                 </tr>
-            ))}
+              ) : null; 
+            })}
           </tbody>
         </table>
       </div>
 
       {/* Order Summary */}
       <div className="mt-8 text-right">
-        <p className="text-lg font-semibold">Total: ${cartTotal.toFixed(2)}</p>
+        <p className="text-lg font-semibold text-gray-800">
+          Total: ${cartTotal.toFixed(2)}
+        </p>
         <button
           className={`btn btn-primary mt-4 ${isCheckingOut ? "loading" : ""}`}
           onClick={handleCheckout}
@@ -110,7 +121,7 @@ function Cart() {
       </div>
 
       <Link to="/">
-        <button className="btn btn-secondary">Back to Home</button>
+        <button className="btn btn-secondary mt-2">Back to Home</button>
       </Link>
     </div>
   );

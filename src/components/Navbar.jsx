@@ -15,7 +15,7 @@ function Navbar() {
   }, [user, cartItems]);
 
   return (
-    <div className="navbar bg-blue-700">
+    <div className="navbar bg-blue-500 text-white shadow-md">
       {/* Brand/Logo */}
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost normal-case text-xl text-white">
@@ -60,7 +60,7 @@ function Navbar() {
               <div className="w-10 rounded-full">
                 <img
                   alt="User Profile"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  
                 />
               </div>
             </div>
@@ -68,15 +68,7 @@ function Navbar() {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
-              <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
+            
               <li>
                 <Link to="/" onClick={logout}>
                   Logout

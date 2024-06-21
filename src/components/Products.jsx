@@ -46,20 +46,23 @@ function Products() {
   const uniqueCategories = Object.keys(productsByCategory);
 
   return (
-    <div>
-      <h1>Product Catalog</h1>
+    <div className="bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-bold text-center py-8 text-gray-800">
+        Product Catalog
+      </h1>
 
-      
-      <button
-        className="btn btn-secondary"
-        onClick={() => setShowFilterOptions(!showFilterOptions)}
-      >
-        Sort & Filter
-      </button>
+      {/* Filter Button (add some margin and style) */}
+      <div className="flex justify-center mb-4">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => setShowFilterOptions(!showFilterOptions)}
+        >
+          Filter & Sort
+        </button>
+      </div>
 
-      
-      {showFilterOptions && ( 
-        <div className="filters mb-4 flex flex-wrap gap-4">
+      {showFilterOptions && (
+        <div className="filters mb-4 flex flex-wrap justify-center gap-4">
           <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
             <label htmlFor="category" className="block mb-2">
               Category:
@@ -143,36 +146,29 @@ function Products() {
         </div>
       )}
 
-
-
       {/* Product Display */}
-      <div className="container mx-auto23">
+      <div className="container mx-auto">
+        {/* Map over unique categories */}
         {uniqueCategories.map((category) => (
           <div key={category} className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">{category}</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <h2 className="text-2xl font-medium text-gray-700 mb-4">{category}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {productsByCategory[category].map((product) => (
-                <div
-                  key={product.id}
-                  className="card card-compact bg-yellow-100 shadow-xl cursor-pointer"
-                >
-                  <figure className="relative h-48">
-                    <img
-                      src={product.image}
-                      alt={product.title}
-                      className="absolute inset-0 w-full h-full object-contain rounded-t-lg mb-2"
-                    />
-                  </figure>
-                  <div className="card-body">
-                    <h2 className="card-title">{product.title}</h2>
-                    <p>Price: ${product.price}</p>
-                    <div className="card-actions justify-end">
-                      <Link to={`/product/${product.id}`}>
-                        <button className="btn btn-primary">View Details</button>
-                      </Link>
+                <Link to={`/product/${product.id}`} key={product.id} className="transform hover:scale-105 transition duration-300">
+                  <div className="card card-compact bg-white rounded-lg shadow-md overflow-hidden"> {/* White rounded card with shadow */}
+                    <figure>
+                      <img
+                        src={product.image}
+                        alt={product.title}
+                        className="w-full h-48 object-cover" 
+                      />
+                    </figure>
+                    <div className="card-body">
+                      <h2 className="card-title text-gray-900">{product.title}</h2>
+                      <p className="text-gray-700 mt-2">${product.price.toFixed(2)}</p>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
