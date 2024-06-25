@@ -6,7 +6,7 @@ import { AuthContext } from "./Auth";
 
 function Cart() {
   const { user } = useContext(AuthContext);
-  const { products, isLoading } = useContext(ApiContext); // Use ApiContext
+  const { products, isLoading } = useContext(ApiContext); 
   const {
     cartItems,
     removeFromCart,
@@ -20,7 +20,7 @@ function Cart() {
 
   const handleCheckout = async () => {
     setIsCheckingOut(true);
-    await checkout(); // Call the checkout function from the context
+    await checkout(); 
     setIsCheckingOut(false);
   };
 
@@ -53,7 +53,7 @@ function Cart() {
           <tbody>
             
             {cartItems.map((item, index) => {
-              // Check if the product exists in the loaded products array
+              
               const product = products.find((p) => p.id === item.id);
 
               return product ? (
@@ -94,7 +94,7 @@ function Cart() {
                   <th>
                     <button
                       className="btn btn-error btn-sm"
-                      onClick={() => removeFromCart(item.id)} // Use productId to remove
+                      onClick={() => removeFromCart(item.id)} 
                     >
                       Remove
                     </button>
