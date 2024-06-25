@@ -19,13 +19,13 @@ function App() {
           <CartProvider>
             <Navbar /> 
             <Routes>
-              {/* Layout Route - Renders Navbar on all child routes */}
+              
               <Route path="/" element={<Layout />}>
                 <Route index element={<Products />} />
                 <Route path="/product/:productId" element={<ProductDetail />} />
-                <Route path="/cart" element={<Cart />} /> {/* Move Cart route inside Layout */}
+                <Route path="/cart" element={<Cart />} /> 
               </Route>
-              {/* Auth Routes - No Navbar */}
+              
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegistrationForm />} />
             </Routes>
@@ -39,7 +39,7 @@ function App() {
 function Layout() {
   return (
     <div>
-      <Outlet />  {/* This renders the child route's content */}
+      <Outlet />  
     </div>
   );
 }

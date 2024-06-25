@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "./Auth"; // Assuming AuthContext is in the same directory
+import { AuthContext } from "./Auth"; 
 import NavigationLinks from "./NavigationLinks";
-import { ApiContext } from "./Api"; // Assuming Api.jsx is in the same directory
+import { ApiContext } from "./Api"; 
 import { CartContext } from "./CartApi";
 
 function Navbar() {
@@ -11,7 +11,7 @@ function Navbar() {
   const [shouldRender, setShouldRender] = useState(true);
 
   useEffect(() => {
-    setShouldRender(!shouldRender); // Trigger re-render when user changes
+    setShouldRender(!shouldRender); 
   }, [user, cartItems]);
 
   return (

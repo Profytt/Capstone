@@ -43,9 +43,9 @@ function CartProvider({ children }) {
   };
 
   const checkout = () => {
-    // This function would typically handle sending the order to a backend
+    
     console.log("Checking out with items:", cartItems);
-    // After checkout, you'd likely clear the cart here
+    
     setCartItems([]);
   };
 

@@ -17,7 +17,7 @@ function LoginForm() {
     const fakeUserData = {
       id: 1, // Some fake user ID
       username: username,
-      // ... other user details you want to store
+     
     };
 
     login(fakeUserData); // Simulate successful login

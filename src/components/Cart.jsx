@@ -38,7 +38,7 @@ function Cart() {
         Your Shopping Cart
       </h1>
 
-      {/* Cart Items Table */}
+      
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full">
           <thead>
@@ -51,7 +51,7 @@ function Cart() {
             </tr>
           </thead>
           <tbody>
-            {/* Loop through cartItems and find the corresponding product */}
+            
             {cartItems.map((item, index) => {
               // Check if the product exists in the loaded products array
               const product = products.find((p) => p.id === item.id);
@@ -72,7 +72,7 @@ function Cart() {
                   </td>
                   <td>${product?.price.toFixed(2) || "Loading..."}</td>
                   <td>
-                    {/* Add quantity update logic here */}
+                  
                     <input
                       type="number"
                       min={1} 
@@ -106,8 +106,8 @@ function Cart() {
         </table>
       </div>
 
-      {/* Order Summary */}
-      <div className="mt-8 text-right">
+      
+      <div className="mt-8 text-right">  
         <p className="text-lg font-semibold text-gray-800">
           Total: ${cartTotal.toFixed(2)}
         </p>
